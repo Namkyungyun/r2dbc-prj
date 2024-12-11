@@ -1,0 +1,44 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: apigateway-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+    gateway:
+      routes:
+        - id: info-service
+          uri: lb://INFO-SERVICE
+          predicates:
+            - Path=/info-service/**
+          filters:
+            - RewritePath=/info-service/(?<segment>.*), /$\{segment}
+        - id: info-service
+          uri: lb://INFO-SERVICE
+          predicates:
+            - Path=/info-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RewritePath=/info-service/(?<segment>.*), /$\{segment}
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, busrefresh, info

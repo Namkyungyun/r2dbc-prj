@@ -1,0 +1,16 @@
+spring:
+  application: 
+   name: apigateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: service-1
+          uri: lb://SERVICE-1
+          predicates:
+            - Path=/service-1/**
+            - Method=GET,POST
+        - id: service-2
+          uri: lb://SERVICE-2
+          predicates:
+            - Path=/service-2/**
+            - Method=GET,POST

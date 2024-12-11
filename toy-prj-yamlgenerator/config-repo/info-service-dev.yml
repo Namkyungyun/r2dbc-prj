@@ -1,0 +1,33 @@
+text:
+  change: change_after_2!
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  r2dbc:
+    #    #mariadb
+    url: r2dbc:mariadb://localhost:3306/yamlgenerator
+    username: root
+    password: test1357
+  #    #h2-file
+  #    url: r2dbc:h2:file:///C:/Users/skaru/Desktop/yamlgenerator/Rabbitmq-SpringCloudBus/test
+  #    username: sa
+  #    password: sa
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
